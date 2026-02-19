@@ -1,0 +1,17 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fundo transparente -->
+  <rect width="100" height="100" fill="none"/>
+
+  <!-- Corpo do Q -->
+  <circle cx="50" cy="45" r="28" fill="none" stroke="#1E6BFF" stroke-width="10" stroke-linecap="round"/>
+
+  <!-- Raio (perninha rotacionada 45° anti-horário) -->
+  <g transform="rotate(-45 58 62)">
+    <path d="M58 62 L48 90 L62 78 L54 98"
+          fill="none"
+          stroke="#FFD400"
+          stroke-width="8"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+  </g>
+</svg>

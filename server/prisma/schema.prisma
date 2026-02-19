@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  PLAYER
+}
+
+model Usuario {
+  id        String    @id @default(uuid())
+  nome      String
+  email     String    @unique
+  senha     String    @default("segredo")
+  celular   String?
+  role      Role      @default(PLAYER)
+  ativo     Boolean   @default(true)
+  deletedAt DateTime? 
+  partidas  Partida[]
+}
+
+model Pergunta {
+  id         String              @id @default(uuid())
+  nome       String
+  ordem      Int
+  ativo      Boolean             @default(true)
+  deletedAt  DateTime?
+  respostas  Pergunta_Resposta[]
+  rodadas    Rodada_Partida[]
+}
+
+model Resposta {
+  id         String              @id @default(uuid())
+  nome       String
+  ordem      Int?
+  ativo      Boolean             @default(true)
+  deletedAt  DateTime?
+  perguntas  Pergunta_Resposta[]
+}
+
+model Pergunta_Resposta {
+  id          String   @id @default(uuid())
+  pergunta    Pergunta @relation(fields: [id_pergunta], references: [id])
+  id_pergunta String
+  resposta    Resposta @relation(fields: [id_resposta], references: [id])
+  id_resposta String
+  correta     Boolean  @default(false)
+  ordem       Int
+
+  @@unique([id_pergunta, id_resposta]) // Garante que não haja duplicata da mesma associação
+}
+
+model Partida {
+  id         String           @id @default(uuid())
+  data_hora  DateTime         @default(now())
+  usuario    Usuario          @relation(fields: [id_usuario], references: [id])
+  id_usuario String
+  rodadas    Rodada_Partida[]
+}
+
+model Rodada_Partida {
+  id                   String   @id @default(uuid())
+  partida              Partida  @relation(fields: [id_partida], references: [id])
+  id_partida           String
+  pergunta             Pergunta @relation(fields: [id_pergunta], references: [id])
+  id_pergunta          String
+  id_resposta_correta  String
+  id_resposta_escolhida String
+  acertou              Boolean
+}
