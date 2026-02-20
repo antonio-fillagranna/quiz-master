@@ -65,6 +65,84 @@ O projeto adota uma **Arquitetura Desacoplada (Client-Server)**, separando total
 
 ---
 
+## 📂 Estrutura do Projeto
+
+```text
+desafio-quiz/
+├── frontend/               # Aplicação React + Vite
+│   ├── src/
+│   │   ├── assets/         # Imagens e recursos estáticos
+│   │   ├── components/     # Componentes reutilizáveis
+│   │   ├── context/        # Autenticação e Estados Globais
+│   │   ├── pages/          # Telas (Login, Lobby, Quiz)
+│   │   └── services/       # Configuração do Axios
+├── server/                 # API Node.js + Express
+│   ├── prisma/             # Schema e Migrations
+│   ├── src/
+│   │   ├── @types/         # Sobrescrita de tipos do Express
+│   │   ├── controllers/    # Lógica de recebimento de requisições
+│   │   ├── middlewares/    # Filtros de Autenticação (RBAC)
+│   │   ├── services/       # Regras de negócio e integração
+│   │   └── routes.ts       # Definição de todos os endpoints
+└── README.md               # Documentação principal
+```
+
+---
+
+## 🔌 Endpoints da API (V1)
+
+### 🔐 Autenticação
+| Rota | Método | Descrição | Protegida? |
+| :--- | :--- | :--- | :--- |
+| `/register` | `POST` | Cria um novo usuário | Não |
+| `/login` | `POST` | Autentica e retorna o JWT | Não |
+
+**Payload Exemplo (`/register`):**
+```json
+{
+  "nome": "João Silva",
+  "email": "joao@email.com",
+  "senha": "123"
+}
+```
+
+---
+
+### 📝 Perguntas e Respostas (Admin)
+| Rota | Método | Descrição | Permissão |
+| :--- | :--- | :--- | :--- |
+| `/perguntas` | `POST` | Cria pergunta com vínculos | `ADMIN` |
+| `/respostas` | `POST` | Cria resposta no banco | `ADMIN` |
+
+**Payload Exemplo (`POST /perguntas`):**
+```json
+{
+  "nome": "Qual a capital da França?",
+  "respostas": [
+    { "id_resposta": "uuid-aqui", "correta": true, "ordem": 1 },
+    { "id_resposta": "uuid-ali", "correta": false, "ordem": 2 }
+  ]
+}
+```
+
+---
+
+### 🎮 Gameplay e IA
+| Rota | Método | Descrição |
+| :--- | :--- | :--- |
+| `/quiz` | `GET` | Retorna perguntas e alternativas ativas |
+| `/partidas` | `POST` | Inicia uma nova sessão de jogo |
+| `/ia/explicar` | `POST` | Gera explicação sobre erro usando Gemini |
+
+**Payload Exemplo (`POST /ia/explicar`):**
+```json
+{
+  "pergunta": "Qual a capital da França?",
+  "resposta_escolhida": "Lyon",
+  "resposta_correta": "Paris"
+}
+```
+
 ## 🗄️ Estrutura do Banco de Dados
 
 Abaixo está a representação do modelo relacional. Utilizei exclusão lógica (Soft Delete) para manter a integridade dos históricos de partidas e rankings.
