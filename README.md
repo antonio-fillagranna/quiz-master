@@ -37,7 +37,7 @@ O projeto adota uma **Arquitetura Desacoplada (Client-Server)**, separando total
 
 1. **Clone o repositório:**
    ```bash
-   git clone [https://github.com/antonio-fillagranna/quiz-master.git](https://github.com/antonio-fillagranna/quiz-master.git)
+   git clone https://github.com/antonio-fillagranna/quiz-master.git
    ```
    
 2. **Configuração de Ambiente:**
